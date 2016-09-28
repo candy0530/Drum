@@ -1,2 +1,9 @@
 .DS_Store
-project.android/obj/*
+proj.android/obj/*
+proj.android/libs/*
+proj.android/assets/res/*
+proj.android/bin/*.apk
+proj.android/bin/*.ap_
+proj.android/bin/*.d
+proj.android/bin/classes/*
+proj.android/bin/res/*
