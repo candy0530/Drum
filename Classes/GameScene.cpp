@@ -1,6 +1,6 @@
 #include "TeachScene.h"
 #include "GameScene.h"
-#include "SpongeScene.h"
+#include "PlayingScene.h"
 #include "DataG.h"
 #include "MainScene.h"
 #include "SimpleAudioEngine.h"
@@ -104,7 +104,7 @@ void GameScene::tranToBattle(Ref* pSender){
     log("Game click %d",++ccc);
 
     auto scene = Scene::create();
-    SpongeScene *layer = SpongeScene::create();
+    PlayingScene *layer = PlayingScene::create();
     scene->addChild(layer);
 
     auto transitions = TransitionFade::create(0.2f, scene);

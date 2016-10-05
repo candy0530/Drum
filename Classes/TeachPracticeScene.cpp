@@ -1,7 +1,7 @@
 #include "MainScene.h"
 #include "TeachPracticeScene.h"
 #include "TeachScene.h"
-#include "SpongeScene.h"
+#include "PlayingScene.h"
 #include <sstream>
 
 using namespace std;
@@ -137,7 +137,7 @@ void TeachPracticeScene::tranToStory(Ref* pSender){
 void TeachPracticeScene::battle_bt(Ref* pSender){
 
     auto scene = Scene::create();
-    SpongeScene *layer = SpongeScene::create();
+    PlayingScene *layer = PlayingScene::create();
     layer->init();
     scene->addChild(layer);
 

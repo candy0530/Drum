@@ -1,7 +1,7 @@
 #include "MainScene.h"
 #include "TeachHowToPlayScene.h"
 #include "TeachScene.h"
-#include "SpongeScene.h"
+#include "PlayingScene.h"
 USING_NS_CC;
 
 const char* story_pic2 ;
@@ -103,7 +103,7 @@ void TeachHowToPlayScene::tranToStory(Ref* pSender){
 void TeachHowToPlayScene::battle_bt(Ref* pSender){
 
     auto scene = Scene::create();
-    SpongeScene *layer = SpongeScene::create();
+    PlayingScene *layer = PlayingScene::create();
 //    layer->init();
     scene->addChild(layer);
 

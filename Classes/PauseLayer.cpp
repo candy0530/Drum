@@ -5,7 +5,7 @@
  *      Author: Wei Shang Chieh
  */
 #include "GameScene.h"
-#include "SpongeScene.h"
+#include "PlayingScene.h"
 #include "PauseLayer.h"
 #include "SimpleAudioEngine.h"
 #include "TeachScene.h"

@@ -1,12 +1,12 @@
-#ifndef __SPONGESCENE_H__
-#define __SPONGESCENE_H__
+#ifndef __PLAYING_SCENE_H__
+#define __PLAYING_SCENE_H__
 
 #include "cocos2d.h"
 #include "ui/CocosGUI.h"
 
 using namespace cocos2d::ui;
 
-class SpongeScene : public cocos2d::Layer
+class PlayingScene : public cocos2d::Layer
 {
 public:
     // there's no 'id' in cpp, so we recommend returning the class instance pointer
@@ -43,6 +43,7 @@ public:
     void create_dis5(cocos2d::CCNode* sender);
     void Readdata();
     void Run();
+    void create_obj();
     void showEnd();
     void endSence(Ref* pSender);
     void Ai(int click);
@@ -50,7 +51,7 @@ public:
     void Menu(Ref* pSender);
 
     // implement the "static create()" method manually
-    CREATE_FUNC(SpongeScene);
+    CREATE_FUNC(PlayingScene);
 };
 
-#endif // __SPONGESCENE_H__
+#endif // __PLAYING_SCENE_H__
