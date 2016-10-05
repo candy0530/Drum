@@ -91,13 +91,7 @@ void TeachHowToPlayScene::ReadData(){
 
 }
 void TeachHowToPlayScene::tranToStory(Ref* pSender){
-    // create the next scene
-    auto scene = Scene::create();
-    scene->addChild(TeachScene::create());
-
-    // do the transition effect
-    auto transitions = TransitionCrossFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->popScene();
 
 }
 void TeachHowToPlayScene::battle_bt(Ref* pSender){
@@ -108,7 +102,7 @@ void TeachHowToPlayScene::battle_bt(Ref* pSender){
     scene->addChild(layer);
 
     auto transitions = TransitionFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->pushScene(transitions);
 }
 
 void TeachHowToPlayScene::menuCloseCallback(Ref* pSender)

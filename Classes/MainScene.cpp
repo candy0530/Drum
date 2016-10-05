@@ -16,6 +16,7 @@ Scene* MainScene::createScene()
     // add layer as a child to scene
     scene->addChild(layer);
 
+    Director::getInstance()->pushScene(scene);
     // return the scene
     return scene;
 }
@@ -78,7 +79,7 @@ void MainScene::tranToStory(Ref* pSender){
 
 	// do the transition effect
 	auto transitions = TransitionFade::create(0.3f, scene);
-	Director::getInstance()->replaceScene(transitions);
+	Director::getInstance()->pushScene(transitions);
 
 }
 
@@ -89,7 +90,7 @@ void MainScene::tranToGame(Ref* pSender){
 
     // do the transition effect
     auto transitions = TransitionFade::create(0.3f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->pushScene(transitions);
 }
 
 void MainScene::bluetooth(Ref* pSender){

@@ -221,60 +221,57 @@ bool TeachScene::init()
 }
 
 void TeachScene::pageviewCallBack(Ref* sender, PageViewEventType type){
-	if(type == PAGEVIEW_EVENT_TURNING){
-		auto pageView = dynamic_cast<PageView*>(sender);
-		log("%ld", pageView->getCurPageIndex() + 1);
-		data_mode = 0;
-		data_stage = pageView->getCurPageIndex() + 1;
-	}
+    if(type == PAGEVIEW_EVENT_TURNING){
+        auto pageView = dynamic_cast<PageView*>(sender);
+        log("%ld", pageView->getCurPageIndex() + 1);
+        data_mode = 0;
+        data_stage = pageView->getCurPageIndex() + 1;
+    }
 }
 
 void TeachScene::tranToTeachOne(Ref* sender){
-	// create the next scene
-	auto scene = Scene::create();
-	scene->addChild(TeachBasicIntroScene::create());
+    // create the next scene
+    auto scene = Scene::create();
+    scene->addChild(TeachBasicIntroScene::create());
 
-	// do the transition effect
-	auto transitions = TransitionCrossFade::create(0.6f, scene);
-	Director::getInstance()->replaceScene(transitions);
+    // do the transition effect
+    auto transitions = TransitionCrossFade::create(0.6f, scene);
+    Director::getInstance()->pushScene(transitions);
 
 }
 
 void TeachScene::tranToTeachTwoIntro(Ref* sender){
-	// create the next scene
-	auto scene = Scene::create();
-	scene->addChild(TeachHowToPlayScene::create());
+    // create the next scene
+    auto scene = Scene::create();
+    scene->addChild(TeachHowToPlayScene::create());
 
-	// do the transition effect
-	auto transitions = TransitionCrossFade::create(0.6f, scene);
-	Director::getInstance()->replaceScene(transitions);
+    // do the transition effect
+    auto transitions = TransitionCrossFade::create(0.6f, scene);
+    Director::getInstance()->pushScene(transitions);
 
 }
 
 void TeachScene::tranToTeachThreeTeach(Ref* sender){
-	// create the next scene
-	auto scene = Scene::create();
-	scene->addChild(TeachPracticeScene::create());
+    // create the next scene
+    auto scene = Scene::create();
+    scene->addChild(TeachPracticeScene::create());
 
-	log("Enter:");
-	// do the transition effect
-	auto transitions = TransitionCrossFade::create(0.1f, scene);
-	Director::getInstance()->replaceScene(transitions);
+    log("Enter:");
+    // do the transition effect
+    auto transitions = TransitionCrossFade::create(0.1f, scene);
+    Director::getInstance()->pushScene(transitions);
 
 }
 
 void TeachScene::backtomain(Ref* pSender){
-	auto scene = Scene::create();
-	scene->addChild(MainScene::create());
-	auto transitions = TransitionFade::create(0.2f, scene);
-	Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->popScene();
 }
 
 
 void TeachScene::menuCloseCallback(Ref* pSender)
 {
 #if (CC_TARGET_PLATFORM == CC_PLATFORM_WP8) || (CC_TARGET_PLATFORM == CC_PLATFORM_WINRT)
-	MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
+    MessageBox("You pressed the close button. Windows Store Apps do not implement a close button.","Alert");
     return;
 #endif
 

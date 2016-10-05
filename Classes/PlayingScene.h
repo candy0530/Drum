@@ -43,7 +43,6 @@ public:
     void create_dis5(cocos2d::CCNode* sender);
     void Readdata();
     void Run();
-    void create_obj();
     void showEnd();
     void endSence(Ref* pSender);
     void Ai(int click);

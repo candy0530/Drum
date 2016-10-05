@@ -74,14 +74,6 @@ void PauseLayer::Resume_bt(Ref* pSender){
 void PauseLayer::Over_bt(Ref* pSender){
 
     data_pause = 0;
-
-    auto scene = Scene::create();
-    if(data_mode==0){
-        scene->addChild(TeachScene::create());
-    }else{
-        scene->addChild(GameScene::create());
-    }
-    // do the transition effect
-    auto transitions = TransitionCrossFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->popScene();
+    Director::getInstance()->popScene();
 }

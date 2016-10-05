@@ -73,13 +73,7 @@ void TeachBasicIntroScene::ReadData(){
 }
 
 void TeachBasicIntroScene::tranToStory(Ref* pSender){
-    // create the next scene
-    auto scene = Scene::create();
-    scene->addChild(TeachScene::create());
-
-    // do the transition effect
-    auto transitions = TransitionCrossFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->popScene();
 
 }
 

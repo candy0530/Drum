@@ -156,6 +156,7 @@ bool PlayingScene::init()
     CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic(song,false);
     music_flag = 1;
     count = 0;
+    current_beats = 0;
 
     auto action = CallFunc::create(this, callfunc_selector(PlayingScene::Run));
     this->runAction(Sequence::create(DelayTime::create(first_beats_time[0]), action, NULL));
@@ -850,16 +851,7 @@ void PlayingScene::showEnd(){
 void PlayingScene::endSence(Ref* pSender){
 
     end_flag = 0;
-
-    auto scene = Scene::create();
-    if(data_mode==0){
-        scene->addChild(TeachScene::create());
-    }else{
-        scene->addChild(GameScene::create());
-    }
-    // do the transition effect
-    auto transitions = TransitionCrossFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->popScene();
 }
 
 void PlayingScene::Ai(int click){

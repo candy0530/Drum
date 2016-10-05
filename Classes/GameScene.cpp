@@ -108,15 +108,12 @@ void GameScene::tranToBattle(Ref* pSender){
     scene->addChild(layer);
 
     auto transitions = TransitionFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->pushScene(transitions);
 
 }
 
 void GameScene::backtomain(Ref* pSender){
-    auto scene = Scene::create();
-    scene->addChild(MainScene::create());
-    auto transitions = TransitionFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->popScene();
 }
 
 void GameScene::menuCloseCallback(Ref* pSender)

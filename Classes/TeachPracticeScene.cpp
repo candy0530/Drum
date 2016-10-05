@@ -125,13 +125,7 @@ void TeachPracticeScene::onKeyReleased(EventKeyboard::KeyCode keyCode, Event* ev
 }
 
 void TeachPracticeScene::tranToStory(Ref* pSender){
-    // create the next scene
-    auto scene = Scene::create();
-    scene->addChild(TeachScene::create());
-
-    // do the transition effect
-    auto transitions = TransitionCrossFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->popScene();
 
 }
 void TeachPracticeScene::battle_bt(Ref* pSender){
@@ -142,7 +136,7 @@ void TeachPracticeScene::battle_bt(Ref* pSender){
     scene->addChild(layer);
 
     auto transitions = TransitionFade::create(0.2f, scene);
-    Director::getInstance()->replaceScene(transitions);
+    Director::getInstance()->pushScene(transitions);
 }
 
 void TeachPracticeScene::menuCloseCallback(Ref* pSender)
