@@ -26,78 +26,76 @@ THE SOFTWARE.
 ****************************************************************************/
 package org.cocos2dx.cpp;
 
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.UUID;
 import org.cocos2dx.lib.Cocos2dxActivity;
 import org.cocos2dx.lib.Cocos2dxGLSurfaceView;
-
-import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
+import android.bluetooth.BluetoothServerSocket;
+import android.bluetooth.BluetoothSocket;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.Toast;
-
-
 
 
 public class AppActivity extends Cocos2dxActivity {
-	private Cocos2dxGLSurfaceView glSurfaceView;
-	
-	public static final int SHOW_DIALOG = 0x0001;
-	public static final int OPEN_BT = 0x0002;
-	public static final int SENT_DATA = 0x0003;
-	private BluetoothAdapter btAdapt;
 
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState); 
+    /**
+     * Cocos JNI
+     */
+    
+    public static final int SHOW_DIALOG = 0x0001;
+    public static final int OPEN_BT = 0x0002;
+    public static final int SEND_DATA = 0x0003;
+    
+    /**
+     * Bluetooth 
+     */
+    
+    static final String SPP_UUID = "00001101-0000-1000-8000-00805F9B34FB";
+    static final UUID uuid = UUID.fromString(SPP_UUID);
+    private BluetoothSocket btSocket;
+    private BluetoothAdapter btAdapt;
+    InputStream btIn = null;
+    OutputStream btOut;
+    SppServer sppServer;
+    boolean sppConnected = false;
+    private BluetoothServerSocket btServerSocket;
+    private String device_address = "2C:F7:F1:81:05:4A";
+    private String msg="";
+
+    /**
+     * 
+     * Cocos
+     * @param savedInstanceState
+     */
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        // TODO Auto-generated method stub
+        super.onCreate(savedInstanceState);
         
         JniHelper.init(mHandler);
-		JniHelper.setPackageName(this.getPackageName());
-		
-		btAdapt = BluetoothAdapter.getDefaultAdapter();
-    }
-
-    public Cocos2dxGLSurfaceView onCreateView()
-    {
-        glSurfaceView = new Cocos2dxGLSurfaceView(this);
-
-        this.hideSystemUI();
-
-        // create stencil buffer
-        glSurfaceView.setEGLConfigChooser(5, 6, 5, 0, 16, 8);
-
-        return glSurfaceView;
-    }
-
-    public void onWindowFocusChanged(boolean hasFocus)
-    {
-        super.onWindowFocusChanged(hasFocus);
-        if (hasFocus)
-        {
-            this.hideSystemUI();
-        }
-    }
-
-    private void hideSystemUI()
-    {
-        // Set the IMMERSIVE flag.
-        // Set the content to appear under the system bars so that the content
-        // doesn't resize when the system bars hide and show.
-        glSurfaceView.setSystemUiVisibility(
-                Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_STABLE 
-                | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-                | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
-                | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_HIDE_NAVIGATION // hide nav bar
-                | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_FULLSCREEN
-                | Cocos2dxGLSurfaceView.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+        JniHelper.setPackageName(this.getPackageName());
+        
+        btAdapt = BluetoothAdapter.getDefaultAdapter();
         
     }
-
-    static
-    {
+    
+    public Cocos2dxGLSurfaceView onCreateView(){
+        
+        Cocos2dxGLSurfaceView glsv = new Cocos2dxGLSurfaceView(AppActivity.this);
+        glsv.setEGLConfigChooser(5,6,5,0,16,8);
+        
+        return glsv;
+    }
+    
+    static {
         System.loadLibrary("cocos2dcpp");
     }
     
@@ -107,46 +105,189 @@ public class AppActivity extends Cocos2dxActivity {
         public void handleMessage(Message msg) {  
             switch(msg.what)  
             {  
-            case SHOW_DIALOG:   
-//                new AlertDialog.Builder(AppActivity.this)  
-//                .setTitle(Var.title)  
-//                .setMessage(Var.txt).setNegativeButton("cancle", new DialogInterface.OnClickListener() {  
-//                      
-//                    @Override  
-//                    public void onClick(DialogInterface dialog, int which) {  
-//                        dialog.dismiss();  
-//                    }  
-//                })  
-//                .setPositiveButton("Ok",   
-//                        new DialogInterface.OnClickListener() {  
-//  
-//                    @Override  
-//                    public void onClick(DialogInterface dialog, int which) {  
-//                        dialog.dismiss();  
-//                        JniHelper.exit();  
-//                    }  
-//                })  
-//                .create().show();  
-                break;
-                
-            case OPEN_BT:
-            	
-            	if (!btAdapt.isEnabled()) {			
-            		btAdapt.enable();
-//            		Connect_BT();
-            		Toast.makeText(AppActivity.this,"無法連線裝置",Toast.LENGTH_SHORT).show();
-        		}else{
-        			Toast.makeText(AppActivity.this,"無法連線裝置",Toast.LENGTH_SHORT).show();
-//        			Connect_BT();
-        		}
-            	break;
-            	
-            case SENT_DATA:
-//            	Sent_Data("1111");
-//            	Log.d("JAVA","SHOW:::"+Var.data);
-            	break;
-            }  
-        }  
+                case SHOW_DIALOG:
+                    new AlertDialog.Builder(AppActivity.this).setTitle(Var.title).setMessage(Var.txt).setNegativeButton("cancel", new DialogInterface.OnClickListener() {  
+                          
+                        @Override  
+                        public void onClick(DialogInterface dialog, int which) {  
+                            dialog.dismiss();  
+                        }  
+                    }).setPositiveButton("Ok",
+                            new DialogInterface.OnClickListener() {  
+      
+                        @Override  
+                        public void onClick(DialogInterface dialog, int which) {  
+                            dialog.dismiss();
+                            JniHelper.exit();
+                        }  
+                    }).create().show();
+                    break;
+                    
+                case OPEN_BT:
+                    
+                    if (!btAdapt.isEnabled()) {
+                        btAdapt.enable();
+                        Connect_BT();
+                    }else{
+                        Connect_BT();
+                    }
+                    break;
+
+                case SEND_DATA:
+                    sent_data(Var.data);
+                    break;
+            }
+
+        }
     };
-	
+
+    /**
+     * Bluetooth connect
+     */
+    // Connect Bluetooth 
+    public void Connect_BT(){
+        if(sppConnected || device_address == null)return;
+        try{
+            btSocket = btAdapt.getRemoteDevice(device_address).createRfcommSocketToServiceRecord(uuid);
+            btSocket.connect();
+            
+            Log.d("JAVA","BT connect");
+            
+            synchronized (AppActivity.this){
+                if(sppConnected)return;
+                // btServerSocket.close();
+                btIn = btSocket.getInputStream();
+                btOut = btSocket.getOutputStream();
+                connected();
+            }
+
+        }catch(IOException e){
+            e.printStackTrace();
+            sppConnected = false;
+            try{
+                btSocket.close();
+            }catch (IOException e1){
+                e1.printStackTrace();
+            }
+            btSocket = null;
+
+        }
+    }
+    //SppServer
+    private class SppServer extends Thread{
+        public SppServer(){
+            try{
+                btServerSocket = btAdapt.listenUsingInsecureRfcommWithServiceRecord("SPP", uuid);
+            } catch(IOException e){
+                e.printStackTrace();
+                btServerSocket=null;
+            }
+        }
+        public void run(){
+            BluetoothSocket bs=null;
+            if(btServerSocket==null){
+                Log.e("JAVA", "ServerSocket null");
+                return;
+            }
+            try{
+                bs = btServerSocket.accept();
+                synchronized(AppActivity.class){
+                    if(sppConnected)return;
+                    btServerSocket.close();
+                    btIn = btSocket.getInputStream();
+                    btOut = btSocket.getOutputStream();
+                    connected();
+                }
+            }catch(IOException e){
+                e.printStackTrace();
+                Log.d("JAVA","ServerSocket accept failed");
+            }
+            Log.i("JAVA", "End Bluetooth SPP Server");
+        }
+        public void cancel(){
+            if(btServerSocket==null){
+                return;
+            }
+            try{
+                btServerSocket.close();
+            }catch(IOException e){
+                e.printStackTrace();
+                Log.e("JAVA", "close serversocket failed");
+            }
+        }
+    }
+    //Connected
+    private void connected(){
+        sppConnected = true;
+        new SppReceiver(btIn).start();
+        sppServer =null;
+        Log.e("JAVA", "connected");
+    }
+    //Disconnect
+    private void disconnect(){
+        sppConnected = false;
+        btIn = null;
+        btOut = null;
+        sppServer = new SppServer();
+        sppServer.start();
+        Log.e("JAVA", "disconnect");
+    }
+    //Data receiver
+    private class SppReceiver extends Thread{
+        private InputStream input =null;
+        public SppReceiver(InputStream in){
+            input = in;
+        }
+        public void run(){
+            byte[] data =new byte[1024];
+            int length=0;
+            if(input==null){
+                return;
+            }
+            while(true){
+                try{
+                    length = input.read(data);
+                    if(length>0){
+                        Var.receivemsg = new String(data);
+                        Log.d("JAVA","Receiver_Msg:"+length);
+                        Var.receivemsg = Var.receivemsg.substring(0,1);
+                        Log.d("JAVA","Receiver_Msg:"+Var.receivemsg);
+                    }
+                }catch(IOException e){
+                    Log.e("JAVA", "SppR_disconnected");
+                    disconnect();
+                }
+            }
+        }
+    }
+
+    public String receive_data(){
+        return Var.receivemsg;
+    }
+    /**
+     * 
+     * Sent Data to BT
+     * 
+     * Not used
+     * 
+     * @param data
+     */
+    public void sent_data(String data){
+        
+        try {
+            btOut.write(data.toString().getBytes());
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        // TODO Auto-generated method stub
+        super.onDestroy();
+    }
+    
+    
+    
 }

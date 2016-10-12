@@ -3,7 +3,10 @@
 #include "PlayingScene.h"
 #include "SimpleAudioEngine.h"
 #include "PauseLayer.h"
+#include "platform/android/jni/JniHelper.h"
 #include <math.h>
+#include <string>
+#include "../proj.android/jni/hellocpp/Function.h"
 USING_NS_CC;
 
 using namespace CocosDenshion;
@@ -157,6 +160,14 @@ bool PlayingScene::init()
     music_flag = 1;
     count = 0;
     current_beats = 0;
+
+    const char *data = "0";
+    sent_data("0");
+    std::string test = JniHelper::jstring2string(receive_data());
+    log("Logging Test: %s", test.c_str());
+    if(test == "1"){
+        log("Logging Test: Wow!");
+    }
 
     auto action = CallFunc::create(this, callfunc_selector(PlayingScene::Run));
     this->runAction(Sequence::create(DelayTime::create(first_beats_time[0]), action, NULL));
