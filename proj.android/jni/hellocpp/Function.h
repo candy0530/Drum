@@ -13,6 +13,7 @@ extern "C"  {
 void showDialog(const char *title, const char *msg);
 void openBT();
 void sent_data(const char *data);
+bool get_bluetooth_status();
 jstring receive_data();
 }
 

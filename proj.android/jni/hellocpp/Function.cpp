@@ -61,6 +61,15 @@ extern "C"
         }
     }
 
+    bool get_bluetooth_status(){
+        JniMethodInfo info;
+        if(JniHelper::getStaticMethodInfo(info,CLASS_NAME,"get_bluetooth_status","()Ljava/lang/boolean;"))  
+        {  
+            log("Call function succeed");  
+            return (bool)info.env->CallStaticObjectMethod(info.classID, info.methodID);  
+        }
+    }
+
     jstring receive_data() {
         JniMethodInfo info;
         if(JniHelper::getStaticMethodInfo(info,CLASS_NAME,"receive_data","()Ljava/lang/String;"))  

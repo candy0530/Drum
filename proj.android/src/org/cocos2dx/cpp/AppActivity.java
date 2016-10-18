@@ -42,6 +42,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.widget.Toast;
 
 
 public class AppActivity extends Cocos2dxActivity {
@@ -146,7 +147,10 @@ public class AppActivity extends Cocos2dxActivity {
      */
     // Connect Bluetooth 
     public void Connect_BT(){
-        if(sppConnected || device_address == null)return;
+        if(sppConnected || device_address == null){
+            Toast.makeText(AppActivity.this,"Bluetooth already Connected or Nor found.",Toast.LENGTH_SHORT).show();
+            return;
+        }
         try{
             btSocket = btAdapt.getRemoteDevice(device_address).createRfcommSocketToServiceRecord(uuid);
             btSocket.connect();
@@ -221,6 +225,7 @@ public class AppActivity extends Cocos2dxActivity {
         sppConnected = true;
         new SppReceiver(btIn).start();
         sppServer =null;
+        Toast.makeText(AppActivity.this,"Bluetooth Connected",Toast.LENGTH_SHORT).show();
         Log.e("JAVA", "connected");
     }
     //Disconnect
@@ -263,6 +268,10 @@ public class AppActivity extends Cocos2dxActivity {
 
     public String receive_data(){
         return Var.receivemsg;
+    }
+
+    public boolean get_bluetooth_status(){
+        return sppConnected;
     }
     /**
      * 
