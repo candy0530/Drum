@@ -5,6 +5,9 @@
 #include "../proj.android/jni/hellocpp/Function.h"
 USING_NS_CC;
 
+extern int data_mode;
+extern int data_stage;
+
 Scene* MainScene::createScene()
 {
     // 'scene' is an autorelease object
@@ -54,9 +57,15 @@ bool MainScene::init()
 
     // add main_game_button
     auto main_game_button = Button::create("main_game_button.png", "main_game_button.png");
-    main_game_button->setPosition(Vec2(visibleSize.width/2 + origin.x + 10, visibleSize.height*1/3 + origin.y));
+    main_game_button->setPosition(Vec2(visibleSize.width/2 + origin.x + 10, visibleSize.height*3/8 + origin.y));
     main_game_button->addClickEventListener(CC_CALLBACK_1(MainScene::tranToGame, this));
     this->addChild(main_game_button, 0);
+
+    // add main_game_master_button
+    auto main_game_master_button = Button::create("main_game_master_button.png", "main_game_master_button.png");
+    main_game_master_button->setPosition(Vec2(visibleSize.width/2 + origin.x + 10, visibleSize.height*1/4 + origin.y));
+    main_game_master_button->addClickEventListener(CC_CALLBACK_1(MainScene::tranToMasterGame, this));
+    this->addChild(main_game_master_button, 0);
 
     // add bluetooth button
     auto main_bluetooth = Button::create("main_bluetooth.png");
@@ -73,17 +82,42 @@ bool MainScene::init()
 }
 
 void MainScene::tranToStory(Ref* pSender){
-	// create the next scene
-	auto scene = Scene::create();
-	scene->addChild(TeachScene::create());
+    data_mode = 0;
+    // if bluetooth open, send data 'A' to Linkit
+    if(get_bluetooth_status()){
+        sent_data("A");
+    }
+    // create the next scene
+    auto scene = Scene::create();
+    scene->addChild(TeachScene::create());
 
-	// do the transition effect
-	auto transitions = TransitionFade::create(0.3f, scene);
-	Director::getInstance()->pushScene(transitions);
+    // do the transition effect
+    auto transitions = TransitionFade::create(0.3f, scene);
+    Director::getInstance()->pushScene(transitions);
 
 }
 
 void MainScene::tranToGame(Ref* pSender){
+    // if bluetooth open, send data 'B' to Linkit
+    data_mode = 1;
+    if(get_bluetooth_status()){
+        sent_data("B");
+    }
+    // create the next scene
+    auto scene = Scene::create();
+    scene->addChild(GameScene::create());
+
+    // do the transition effect
+    auto transitions = TransitionFade::create(0.3f, scene);
+    Director::getInstance()->pushScene(transitions);
+}
+
+void MainScene::tranToMasterGame(Ref* pSender){
+    data_mode = 2;
+    // if bluetooth open, send data 'C' to Linkit
+    if(get_bluetooth_status()){
+        sent_data("C");
+    }
     // create the next scene
     auto scene = Scene::create();
     scene->addChild(GameScene::create());

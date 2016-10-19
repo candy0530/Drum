@@ -33,7 +33,6 @@ bool TeachScene::init()
     {
         return false;
     }
-    data_mode = 0;
     data_stage = 1;
 
     CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("NSMB.mp3",true);
@@ -224,7 +223,6 @@ void TeachScene::pageviewCallBack(Ref* sender, PageViewEventType type){
     if(type == PAGEVIEW_EVENT_TURNING){
         auto pageView = dynamic_cast<PageView*>(sender);
         log("%ld", pageView->getCurPageIndex() + 1);
-        data_mode = 0;
         data_stage = pageView->getCurPageIndex() + 1;
     }
 }

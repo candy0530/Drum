@@ -223,6 +223,7 @@ public class AppActivity extends Cocos2dxActivity {
     //Connected
     private void connected(){
         sppConnected = true;
+        Var.bluetooth_status = sppConnected;
         new SppReceiver(btIn).start();
         sppServer =null;
         Toast.makeText(AppActivity.this,"Bluetooth Connected",Toast.LENGTH_SHORT).show();
@@ -231,6 +232,7 @@ public class AppActivity extends Cocos2dxActivity {
     //Disconnect
     private void disconnect(){
         sppConnected = false;
+        Var.bluetooth_status = sppConnected;
         btIn = null;
         btOut = null;
         sppServer = new SppServer();
@@ -270,8 +272,8 @@ public class AppActivity extends Cocos2dxActivity {
         return Var.receivemsg;
     }
 
-    public boolean get_bluetooth_status(){
-        return sppConnected;
+    public static boolean get_bluetooth_status(){
+        return Var.bluetooth_status;
     }
     /**
      * 

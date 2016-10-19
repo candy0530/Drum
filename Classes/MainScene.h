@@ -23,6 +23,7 @@ public:
 
     // transition to game scene
     void tranToGame(Ref* pSender);
+    void tranToMasterGame(Ref* pSender);
     // implement the "static create()" method manually
     void bluetooth(Ref* pSender);
     CREATE_FUNC(MainScene);

@@ -13,4 +13,5 @@ public class Var {
     public static String txt;
     public static String data;
     public static String receivemsg;
+    public static boolean bluetooth_status=false;
 }

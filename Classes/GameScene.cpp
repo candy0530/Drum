@@ -35,7 +35,6 @@ bool GameScene::init()
     {
         return false;
     }
-    data_mode = 1;
     data_stage = 1;
     
     CocosDenshion::SimpleAudioEngine::sharedEngine()->playBackgroundMusic("NSMB.mp3",true);
@@ -57,33 +56,58 @@ bool GameScene::init()
     auto img = ImageView::create("main_game_button.png");
     img->setPosition(Vec2(340, 1780));
 
+    auto img_master = ImageView::create("main_game_master_button.png");
+    img_master->setPosition(Vec2(340, 1780));
+
     // create the pageview
     auto pageView = PageView::create();
     pageView->setTouchEnabled(true);
     pageView->setSize(windowSize);
 
     // add the layouts
-    for( int i = 1; i < 6; i++ ){
-        std::stringstream ss;
-        ss << i;
-        auto layout = Layout::create();
-        layout->setSize(windowSize);
-        layout->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+    // data_mode=1 -> game_mode, data_mode=2 -> game_master_mode
+    if(data_mode == 1){
+        sprite->addChild(img);
+        for( int i = 1; i < 5; i++ ){
+            std::stringstream ss;
+            ss << i;
+            auto layout = Layout::create();
+            layout->setSize(windowSize);
+            layout->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
 
-        auto button = Button::create("Game_cast_page" + ss.str() + ".png");
-        button->setAnchorPoint(Point::ANCHOR_MIDDLE);
-        button->setPosition(Point(layout->getSize().width / 2, layout->getSize().height / 2));
-        button->setScale(1.0f);
-        button->addClickEventListener(CC_CALLBACK_1(GameScene::tranToBattle, this)); // add the transition function event
-        layout->addChild(button);
+            auto button = Button::create("Game_cast_page" + ss.str() + ".png");
+            button->setAnchorPoint(Point::ANCHOR_MIDDLE);
+            button->setPosition(Point(layout->getSize().width / 2, layout->getSize().height / 2));
+            button->setScale(1.0f);
+            button->addClickEventListener(CC_CALLBACK_1(GameScene::tranToBattle, this)); // add the transition function event
+            layout->addChild(button);
 
-        pageView->addPage(layout);
+            pageView->addPage(layout);
+        }
+    }
+    else if(data_mode == 2){
+        sprite->addChild(img_master);
+        for( int i = 5; i < 6; i++ ){
+            std::stringstream ss;
+            ss << i;
+            auto layout = Layout::create();
+            layout->setSize(windowSize);
+            layout->setPosition(Vec2(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
+
+            auto button = Button::create("Game_cast_page" + ss.str() + ".png");
+            button->setAnchorPoint(Point::ANCHOR_MIDDLE);
+            button->setPosition(Point(layout->getSize().width / 2, layout->getSize().height / 2));
+            button->setScale(1.0f);
+            button->addClickEventListener(CC_CALLBACK_1(GameScene::tranToBattle, this)); // add the transition function event
+            layout->addChild(button);
+
+            pageView->addPage(layout);
+        }
     }
     pageView->addEventListenerPageView(this, pagevieweventselector(GameScene::pageviewCallBack));
 
     sprite->addChild(pageView);
     sprite->addChild(back);
-    sprite->addChild(img);
     this->addChild(sprite, 0);
 
 
@@ -94,7 +118,6 @@ void GameScene::pageviewCallBack(Ref* sender, PageViewEventType type){
     if(type == PAGEVIEW_EVENT_TURNING){
         auto pageView = dynamic_cast<PageView*>(sender);
         log("%ld", pageView->getCurPageIndex() + 1);
-        data_mode = 1;
         data_stage = pageView->getCurPageIndex() + 1;
     }
 }

@@ -9,6 +9,7 @@
 #include "PauseLayer.h"
 #include "SimpleAudioEngine.h"
 #include "TeachScene.h"
+#include "../proj.android/jni/hellocpp/Function.h"
 
 USING_NS_CC;
 
@@ -37,6 +38,9 @@ bool PauseLayer::init(){
         return false;
     }
 
+    if(get_bluetooth_status()){
+        sent_data("0");
+    }
     Size visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     auto windowSize = Director::getInstance()->getWinSize();
@@ -49,12 +53,16 @@ bool PauseLayer::init(){
     Button* resume = Button::create("Game_Pause_resume.png");
     resume->setPosition(Vec2(300,400));
     resume->addClickEventListener(CC_CALLBACK_1(PauseLayer::Resume_bt, this));
-
+    
     Button* over = Button::create("Game_Pause_over.png");
-    over->setPosition(Vec2(300,200));
+    over->setPosition(Vec2(300,300));
     over->addClickEventListener(CC_CALLBACK_1(PauseLayer::Over_bt, this));
 
-    sprite->addChild(resume);
+
+    if(!get_bluetooth_status()){
+        sprite->addChild(resume);
+        over->setPosition(Vec2(300,200));
+    }
     sprite->addChild(over);
     this->addChild(sprite);
 
@@ -74,6 +82,7 @@ void PauseLayer::Resume_bt(Ref* pSender){
 void PauseLayer::Over_bt(Ref* pSender){
 
     data_pause = 0;
+    CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("NSMB.mp3",true);
     Director::getInstance()->popScene();
     Director::getInstance()->popScene();
 }

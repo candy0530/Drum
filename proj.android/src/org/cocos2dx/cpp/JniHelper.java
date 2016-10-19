@@ -43,4 +43,8 @@ public class JniHelper {
     public static String receive_data(){
         return Var.receivemsg;
     }
+
+    public static boolean get_bluetooth_status(){
+        return Var.bluetooth_status;
+    }
 }

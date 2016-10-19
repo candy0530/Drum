@@ -61,12 +61,12 @@ extern "C"
         }
     }
 
-    bool get_bluetooth_status(){
+    jboolean get_bluetooth_status(){
         JniMethodInfo info;
-        if(JniHelper::getStaticMethodInfo(info,CLASS_NAME,"get_bluetooth_status","()Ljava/lang/boolean;"))  
+        if(JniHelper::getStaticMethodInfo(info,CLASS_NAME,"get_bluetooth_status","()Z"))  
         {  
             log("Call function succeed");  
-            return (bool)info.env->CallStaticObjectMethod(info.classID, info.methodID);  
+            return info.env->CallStaticBooleanMethod(info.classID, info.methodID);  
         }
     }
 
