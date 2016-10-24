@@ -28,6 +28,7 @@ int music_d = 200;
 int Array_size = 300;
 
 int current_beats = 0;
+int beats_times;
 int first_beats_time[100];
 int mu1[1400];
 int mu2[1400];
@@ -35,10 +36,11 @@ int mu3[1400];
 int mu4[1400];
 int mu5[1400];
 
+float run_time = 0.8;
 float Song_delay;
 float Song_speed;
 float level;
-float range = 300;
+float range = 440;
 
 int target1_status = 0;
 int target2_status = 0;
@@ -197,7 +199,7 @@ bool PlayingScene::init()
     }
 
     auto action = CallFunc::create(this, callfunc_selector(PlayingScene::Run));
-    this->runAction(Sequence::create(DelayTime::create(first_beats_time[0]/1000.0+Song_delay), action, NULL));
+    this->runAction(Sequence::create(DelayTime::create(first_beats_time[0]/1000.0-run_time), action, NULL));
     
     return true;
 }
@@ -210,7 +212,7 @@ void PlayingScene::Run(){
     float beats_time = duration_time/16.0;
     this->schedule(schedule_selector(PlayingScene::GameLogic),beats_time);
     log("Logging Test: Start to Recursive");
-    if(current_beats>24){
+    if(current_beats > beats_times){
         log("Logging Test: finished");
     }else{
         log("Logging Test: current_beats:%d", current_beats);
@@ -244,7 +246,6 @@ void PlayingScene::Readdata(){
                     pic = "enemy.png";
                     song = "fly.wav";
 
-                    Song_delay = 0;
                     Song_speed = 120;
                     level = 0.2;
 
@@ -273,7 +274,6 @@ void PlayingScene::Readdata(){
                     pic = "Storyb_c3.png";
                     song = "fly.wav";
 
-                    Song_delay = 0;
                     Song_speed = 120;
                     level = 0.2;
 
@@ -302,7 +302,6 @@ void PlayingScene::Readdata(){
                     pic = "enemy.png";
                     song = "dora.wav";
 
-                    Song_delay = 0;
                     Song_speed = 120;
                     level = 0.2;
 
@@ -328,7 +327,6 @@ void PlayingScene::Readdata(){
                     pic = "Storyb_c4.png";
                     song = "bridge.wav";
 
-                    Song_delay = 0;
                     Song_speed = 120;
                     level = 0.2;
 
@@ -353,7 +351,6 @@ void PlayingScene::Readdata(){
                     pic = "enemy.png";
                     song = "bridge.wav";
 
-                    Song_delay = 0;
                     Song_speed = 120;
                     level = 0.2;
 
@@ -379,7 +376,6 @@ void PlayingScene::Readdata(){
                     pic = "Storyb_c5.png";
                     song = "bridge.wav";
 
-                    Song_delay = 0;
                     Song_speed = 120;
                     level = 0.2;
 
@@ -403,7 +399,7 @@ void PlayingScene::Readdata(){
                     //land
                     pic = "enemy.png";
                     song = "land.wav";
-                    Song_delay = 0;
+
                     Song_speed = 120;
                     level = 0.2;
 
@@ -434,17 +430,17 @@ void PlayingScene::Readdata(){
                     pic = "Gameb_c2.png";
                     song = "SpongeTheme.mp3";
 
-                    Song_delay = -0.67;
                     Song_speed = 122;
                     level = 0.2;
-                    int b[100] = {4150, 6150, 8028, 10150, 12150, 14000, 16150, 18150, 20100, 22000, 24000, 26000, 28000, 31888, 33750, 35839, 37741, 39787, 41732, 43734, 45700, 47725, 49699, 51600, 53690, 55736, 57600, 59500};
+                    beats_times = 25;
+                    int b[] = {4150, 6150, 8028, 10150, 12150, 14000, 16150, 18150, 20100, 22000, 24000, 26000, 28000, 31888, 33750, 35839, 37741, 39787, 41732, 43734, 45700, 47725, 49699, 51600, 53690, 55736};
                     memcpy(first_beats_time, b, sizeof(b));
 
-                    int h[700] = {1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-                    int s[700] = {0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-                    int f[700] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-                    int t[700] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
-                    int c[700] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+                    int h[] = {1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+                    int s[] = {0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,1,1,1,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+                    int f[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+                    int t[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
+                    int c[] = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0};
 
                     memcpy(mu1,h,sizeof(h));
                     memcpy(mu2,s,sizeof(s));
@@ -459,7 +455,7 @@ void PlayingScene::Readdata(){
                     pic = "Gameb_c5.png";
                     song = "Immortals.mp3";
 
-                    Song_delay = 3.05;
+                    // Song_delay = 3.05;
                     Song_speed = 109;
                     level = 0.3;
 
@@ -484,7 +480,6 @@ void PlayingScene::Readdata(){
                     pic = "Gameb_c4.png";
                     song = "drum.mp3";
 
-                    Song_delay = 0;
                     Song_speed = 59;
                     level = 0.4;
 
@@ -511,7 +506,6 @@ void PlayingScene::Readdata(){
                     pic = "Gameb_c1.png";
                     song = "Re_make.mp3";
 
-                    Song_delay = 0;
                     Song_speed = 173;
                     level = 0.6;
 
@@ -544,7 +538,7 @@ void PlayingScene::Readdata(){
 
                     log("Mayday");
 
-                    Song_delay = 0.68;
+                    // Song_delay = 0.68;
                     Song_speed = 120;
                     level = 0.5;
 
@@ -621,10 +615,7 @@ void PlayingScene::Menu(Ref* pSender){
     this->getParent()->visit();
     renderTexture->end();
 
-//    CocosDenshion::SimpleAudioEngine::getInstance()->pauseBackgroundMusic();
     Director::getInstance()->pushScene(PauseLayer::createScene(renderTexture));
-
-    //    Director::getInstance()->pause();
 
 }
 
@@ -640,7 +631,7 @@ void PlayingScene::Touch_bt1(Ref* pSender){
 
             float dist1 = target1->getPositionY();
             log("dist1::%f",dist1);
-            if(dist1-300<range){
+            if(dist1 < range){
                 log("Click OK");
                 hit++;
                 click_status1 = 1;
@@ -661,7 +652,7 @@ void PlayingScene::Touch_bt2(Ref* pSender){
 
             float dist2 = target2->getPositionY();
             log("dist2::%f",dist2);
-            if(dist2-300<range){
+            if(dist2 < range){
                 log("Click OK");
                 hit++;
                 click_status2 = 1;
@@ -682,7 +673,7 @@ void PlayingScene::Touch_bt3(Ref* pSender){
 
             float dist3 = target3->getPositionY();
             log("dist3::%f",dist3);
-            if(dist3-300<range){
+            if(dist3 < range){
                 log("Click OK");
                 hit++;
                 click_status3 = 1;
@@ -703,7 +694,7 @@ void PlayingScene::Touch_bt4(Ref* pSender){
 
             float dist4 = target4->getPositionY();
             log("dist4::%f",dist4);
-            if(dist4-300<range){
+            if(dist4 < range ){
                 log("Click OK");
                 hit++;
                 click_status4 = 1;
@@ -724,7 +715,7 @@ void PlayingScene::Touch_bt5(Ref* pSender){
 
             float dist5 = target5->getPositionY();
             log("dist5::%f",dist5);
-            if(dist5-300<range){
+            if(dist5 < range){
                 log("Click OK");
                 hit++;
                 click_status5 = 1;
@@ -762,11 +753,11 @@ void PlayingScene::create_obj1(int data){
         this->addChild(target1,0,1);
         this->addChild(target_enemy,0,1);
 
-        float run_ime = 0.0;
-        run_ime = 60/Song_speed;
+        // float run_ime = 0.0;
+        // run_ime = 60/Song_speed;
 
-        CCFiniteTimeAction *actionMove=CCMoveTo::create(run_ime*5/8, Vec2(music_w+0*music_d,270));
-        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_ime*5/8, Vec2(music_w+0*music_d,1920-500));
+        CCFiniteTimeAction *actionMove=CCMoveTo::create(run_time, Vec2(music_w+0*music_d,270));
+        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_time, Vec2(music_w+0*music_d,1920-500));
         CCFiniteTimeAction *actionMoveDone = CCCallFuncN::create(this,callfuncN_selector(PlayingScene::create_dis1));
         target1->runAction(CCSequence::create(actionMove,actionMoveDone,NULL));
         target_enemy->runAction(CCSequence::create(actionMove2,actionMoveDone,NULL));
@@ -786,15 +777,15 @@ void PlayingScene::create_obj2(int data){
         target_enemy = CCSprite::create("Game_music.png");
         target_enemy->setPosition(Vec2(music_w+1*music_d,950));
 
-        float run_ime2 = 0.0;
+        // float run_ime2 = 1.0;
 
-        run_ime2 = 60/Song_speed;
+        // run_ime2 = 60/Song_speed;
 
         this->addChild(target2,0,1);
         this->addChild(target_enemy,0,1);
 
-        FiniteTimeAction *actionMove=CCMoveTo::create(run_ime2*5/8, Vec2(music_w+1*music_d,270));
-        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_ime2*5/8, Vec2(music_w+1*music_d,1920-500));
+        FiniteTimeAction *actionMove=CCMoveTo::create(run_time, Vec2(music_w+1*music_d,270));
+        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_time, Vec2(music_w+1*music_d,1920-500));
         FiniteTimeAction *actionMoveDone = CallFuncN::create(this,callfuncN_selector(PlayingScene::create_dis2));
         target2->runAction(CCSequence::create(actionMove,actionMoveDone,NULL));
         target_enemy->runAction(CCSequence::create(actionMove2,actionMoveDone,NULL));
@@ -814,15 +805,15 @@ void PlayingScene::create_obj3(int data){
         target_enemy = CCSprite::create("Game_music.png");
         target_enemy->setPosition(Vec2(music_w+2*music_d,950));
 
-        float run_ime3 = 0.0;
+        // float run_ime3 = 1.0;
 
-        run_ime3 = 60/Song_speed;
+        // run_ime3 = 60/Song_speed;
 
         this->addChild(target3,0,1);
         this->addChild(target_enemy,0,1);
 
-        CCFiniteTimeAction *actionMove=CCMoveTo::create(run_ime3*5/8, Vec2(music_w+2*music_d,270));
-        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_ime3*5/8, Vec2(music_w+2*music_d,1920-500));
+        CCFiniteTimeAction *actionMove=CCMoveTo::create(run_time, Vec2(music_w+2*music_d,270));
+        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_time, Vec2(music_w+2*music_d,1920-500));
         CCFiniteTimeAction *actionMoveDone = CCCallFuncN::create(this,callfuncN_selector(PlayingScene::create_dis3));
         target3->runAction(CCSequence::create(actionMove,actionMoveDone,NULL));
         target_enemy->runAction(CCSequence::create(actionMove2,actionMoveDone,NULL));
@@ -843,13 +834,13 @@ void PlayingScene::create_obj4(int data){
         target_enemy->setPosition(Vec2(music_w+3*music_d,950));
 
 
-        float run_ime4 = 0.0;
-        run_ime4 = 60/Song_speed;
+        // float run_ime4 = 1.0;
+        // run_ime4 = 60/Song_speed;
 
         this->addChild(target4,0,1);
         this->addChild(target_enemy,0,1);
-        CCFiniteTimeAction *actionMove=CCMoveTo::create(run_ime4*5/8, Vec2(music_w+3*music_d,270));
-        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_ime4*5/8, Vec2(music_w+3*music_d,1920-500));
+        CCFiniteTimeAction *actionMove=CCMoveTo::create(run_time, Vec2(music_w+3*music_d,270));
+        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_time, Vec2(music_w+3*music_d,1920-500));
         CCFiniteTimeAction *actionMoveDone = CCCallFuncN::create(this,callfuncN_selector(PlayingScene::create_dis4));
         target4->runAction(CCSequence::create(actionMove,actionMoveDone,NULL));
         target_enemy->runAction(CCSequence::create(actionMove2,actionMoveDone,NULL));
@@ -870,13 +861,13 @@ void PlayingScene::create_obj5(int data){
         target_enemy->setPosition(Vec2(music_w+4*music_d,950));
 
 
-        float run_ime5 = 0.0;
-        run_ime5 = 60/Song_speed;
+        // float run_ime5 = 1.0;
+        // run_ime5 = 60/Song_speed;
 
         this->addChild(target5,0,1);
         this->addChild(target_enemy,0,1);
-        CCFiniteTimeAction *actionMove=CCMoveTo::create(run_ime5*5/8, Vec2(music_w+4*music_d,270));
-        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_ime5*5/8, Vec2(music_w+4*music_d,1920-500));
+        CCFiniteTimeAction *actionMove=CCMoveTo::create(run_time, Vec2(music_w+4*music_d,270));
+        CCFiniteTimeAction *actionMove2=CCMoveTo::create(run_time, Vec2(music_w+4*music_d,1920-500));
         CCFiniteTimeAction *actionMoveDone = CCCallFuncN::create(this,callfuncN_selector(PlayingScene::create_dis5));
         target5->runAction(CCSequence::create(actionMove,actionMoveDone,NULL));
         target_enemy->runAction(CCSequence::create(actionMove2,actionMoveDone,NULL));
