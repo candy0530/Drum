@@ -42,6 +42,14 @@ extern "C"
         exit();
     }
 
+    void clean_receive_data(){
+        JniMethodInfo t;
+        if(JniHelper::getStaticMethodInfo(t, CLASS_NAME, "clean_receive_data", "()V"))
+        {
+            t.env->CallStaticVoidMethod(t.classID, t.methodID);
+        }
+    }
+
     void openBT(){
         log("open bt 2");
 

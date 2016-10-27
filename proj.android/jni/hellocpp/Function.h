@@ -15,6 +15,7 @@ void openBT();
 void sent_data(const char *data);
 jboolean get_bluetooth_status();
 jstring receive_data();
+void clean_receive_data();
 }
 
 

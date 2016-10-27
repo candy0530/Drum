@@ -4,6 +4,7 @@
 #include "DataG.h"
 #include "MainScene.h"
 #include "SimpleAudioEngine.h"
+#include "../proj.android/jni/hellocpp/Function.h"
 USING_NS_CC;
 
 extern int data_mode;
@@ -136,6 +137,9 @@ void GameScene::tranToBattle(Ref* pSender){
 }
 
 void GameScene::backtomain(Ref* pSender){
+    if(get_bluetooth_status()){
+        sent_data("0");
+    }
     Director::getInstance()->popScene();
 }
 

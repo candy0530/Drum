@@ -70,6 +70,7 @@ public class AppActivity extends Cocos2dxActivity {
     private BluetoothServerSocket btServerSocket;
     private String device_address = "2C:F7:F1:81:05:4A";
     private String msg="";
+    private int total_hit = 0;
 
     /**
      * 
@@ -255,10 +256,12 @@ public class AppActivity extends Cocos2dxActivity {
                 try{
                     length = input.read(data);
                     if(length>0){
-                        Var.receivemsg = new String(data);
+                        String receivedata = new String(data);
                         Log.d("JAVA","Receiver_Msg:"+length);
-                        Var.receivemsg = Var.receivemsg.substring(0,1);
-                        Log.d("JAVA","Receiver_Msg:"+Var.receivemsg);
+                        total_hit = Integer.parseInt(Var.receivemsg);
+                        receivedata = receivedata.substring(0,2);
+                        total_hit += Integer.parseInt(receivedata);
+                        Var.receivemsg = String.valueOf(total_hit);
                     }
                 }catch(IOException e){
                     Log.e("JAVA", "SppR_disconnected");

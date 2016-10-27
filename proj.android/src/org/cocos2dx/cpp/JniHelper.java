@@ -47,4 +47,8 @@ public class JniHelper {
     public static boolean get_bluetooth_status(){
         return Var.bluetooth_status;
     }
+
+    public static void clean_receive_data(){
+        Var.receivemsg = "0";
+    }
 }

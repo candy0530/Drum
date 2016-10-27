@@ -132,11 +132,11 @@ void TeachPracticeScene::battle_bt(Ref* pSender){
 
     auto scene = Scene::create();
     PlayingScene *layer = PlayingScene::create();
-    layer->init();
+    // layer->init();
     scene->addChild(layer);
 
     auto transitions = TransitionFade::create(0.2f, scene);
-    Director::getInstance()->pushScene(transitions);
+    Director::getInstance()->replaceScene(transitions);
 }
 
 void TeachPracticeScene::menuCloseCallback(Ref* pSender)

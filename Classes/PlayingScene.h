@@ -31,6 +31,8 @@ public:
     void Touch_bt5(Ref* pSender);
 
     void GameLogic(float dt);
+    void Playmusic();
+    void GetBluetoothResult();
     void create_obj1(int data);
     void create_obj2(int data);
     void create_obj3(int data);
