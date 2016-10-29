@@ -32,6 +32,7 @@ public:
 
     void GameLogic(float dt);
     void Playmusic();
+    void SendData();
     void GetBluetoothResult();
     void create_obj1(int data);
     void create_obj2(int data);

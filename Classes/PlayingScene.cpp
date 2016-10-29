@@ -187,13 +187,6 @@ bool PlayingScene::init()
     count = 0;
     current_beats = 0;
 
-    // if(bluetooth_status){
-    //     std::string test = JniHelper::jstring2string(receive_data());
-    //     log("Logging Test: %s", test.c_str());
-    //     if(test == "1"){
-    //        log("Logging Test: Wow!");
-    //     }
-    // }
     auto action_play_music = CallFunc::create(this, callfunc_selector(PlayingScene::Playmusic));
     this->runAction(Sequence::create(DelayTime::create(run_time), action_play_music, NULL));
     auto action = CallFunc::create(this, callfunc_selector(PlayingScene::Run));
@@ -238,8 +231,14 @@ void PlayingScene::GetBluetoothResult(){
     clean_receive_data();
 }
 
+void PlayingScene::SendData(){
+    sent_data("P");
+}
+
 void PlayingScene::Run(){
     if(get_bluetooth_status()){
+        auto action_send = CallFunc::create(this, callfunc_selector(PlayingScene::SendData));
+        this->runAction(Sequence::create(DelayTime::create(0.5), action_send, NULL));
         GetBluetoothResult();
     }
     this->unschedule(schedule_selector(PlayingScene::GameLogic));
@@ -263,6 +262,7 @@ void PlayingScene::Readdata(){
 
     // reset data status
     count  = 0;
+    current_beats = 0;
     music_flag = 0;
     rope_x = -5;
     end_flag = 0;
@@ -522,9 +522,9 @@ void PlayingScene::Readdata(){
                     song = "drum.mp3";
 
                     level = 0.4;
-                    beats_times = 27;
+                    beats_times = 28;
 
-                    int  b[] = {5983, 8126, 10205, 12262, 14512, 16571, 18683, 20640, 22647, 24666, 26690, 28724, 30817, 32866, 34878, 36915, 38957, 40963, 42996, 45006, 47163, 49204, 51280, 53261, 55284, 57299, 59306, 61307};
+                    int  b[] = {5983, 8126, 10205, 12262, 14512, 16571, 18683, 20640, 22647, 24666, 26690, 28724, 30817, 32866, 34878, 36915, 38957, 40963, 42996, 45006, 47163, 49204, 51280, 53261, 55284, 57299, 59306, 61307, 63307};
                     memcpy(first_beats_time, b, sizeof(b));
 
                     int h[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -611,14 +611,7 @@ void PlayingScene::GameLogic(float dt){
 
         log("Logging Test: %d, mu1_size: %d", count, sizeof(mu1));
 
-        if(count>=sizeof(mu1)/4){
-            while(CocosDenshion::SimpleAudioEngine::sharedEngine()->isBackgroundMusicPlaying()){
-                log("waiting music end");
-            }
-            log("music end");
-            this->unschedule(schedule_selector(PlayingScene::GameLogic));
-            showEnd();
-            end_flag=1;
+        if(current_beats>beats_times){
             return;
         }
         if(mu1[count]){
