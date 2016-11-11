@@ -7,4 +7,4 @@ proj.android/bin/*.ap_
 proj.android/bin/*.d
 proj.android/bin/classes/*
 proj.android/bin/res/*
-*/*.class
+*.class
